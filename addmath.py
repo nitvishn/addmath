@@ -27,79 +27,6 @@ def primesFromFile(filename):
         primes.append(line)
     return primes
 
-
-class Fraction(object):
-    def __init__(self, numer, denom=1):
-        self.numer = numer
-        self.denom = denom
-        self.simplify()
-
-    def getNumer(self):
-        return self.numer
-
-    def getDenom(self):
-        return self.denom
-
-    def setNumer(self, numer):
-        self.numer = numer
-
-    def setDenom(self, denom):
-        self.denom = denom
-
-    def value(self):
-        return float(self.numer) / self.denom
-
-    def reciprocal(self):
-        return Fraction(self.getDenom(), self.getNumer())
-
-    def recurring_cycles(self):
-        denom = self.getDenom()
-        cursor = (self.getNumer() * 10) % denom
-        cycles = []
-        count = 0
-        while ((cursor not in cycles) and count < denom):
-            cycles.append(cursor)
-            cursor = (cursor * 10) % denom
-            count += 1
-            if (cursor == 0):
-                return cursor
-        return count
-
-    def simplify(self):
-        num1 = self.getNumer()
-        num2 = self.getDenom()
-        while (not (int(num1) == num1 and int(num2) == num2)):
-            num1 *= 10
-            num2 *= 10
-        primes = intersection(prime_factors(abs(num1)),
-                              prime_factors(abs(num2)))
-        if (len(primes) < 1):
-            return
-        i = 0
-        prime = primes[i]
-        while (num1 % prime == 0 and num2 % prime == 0 and len(primes) > 0):
-            while (num1 % prime == 0 and num2 % prime == 0):
-                num1 /= prime
-                num2 /= prime
-            del primes[i]
-            if (len(primes) == 0):
-                break
-            prime = primes[i]
-        self.setNumer(num1)
-        self.setDenom(num2)
-
-    def __str__(self):
-        return '(' + str(int(self.getNumer())) + '/' + str(int(self.getDenom())) + ')'
-
-    def __eq__(self, other):
-        self.simplify()
-        other.simplify()
-        if (self.getNumer() == other.getNumer()):
-            if (self.getDenom() == other.getDenom()):
-                return True
-        return False
-
-
 def get_digits(number):
     digits = set()
     number = str(number)
@@ -250,28 +177,6 @@ def factors_raw(n):
 
 def intersection(list1, list2):
     return list(set(list1).intersection(list2))
-
-
-def simplify_fraction(fraction):
-    num1 = fraction.getNumer()
-    num2 = fraction.getDenom()
-    while (not (int(num1) == num1 and int(num2) == num2)):
-        num1 *= 10
-        num2 *= 10
-    primes = intersection(prime_factors(num1), prime_factors(num2))
-    if (len(primes) < 1):
-        return Fraction(num1, num2)
-    i = 0
-    prime = primes[i]
-    while (num1 % prime == 0 and num2 % prime == 0 and len(primes) > 0):
-        if (num1 % prime == 0 and num2 % prime == 0 and len(primes) > 0):
-            num1 /= prime
-            num2 /= prime
-            del primes[i]
-            if (len(primes) == 0):
-                break
-            prime = primes[i]
-    return Fraction(num1, num2)
 
 
 def num_factors(n):
